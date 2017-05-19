@@ -57,7 +57,15 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
 end
 
+# bootstrap gem
+gem 'bootstrap', '~> 4.0.0.alpha6'
 
+source 'https://rails.assets.org' do
+  gem 'rails-assets-tether', '>= 1.3.3'
+end
+
+# jquery gem
+gem 'jquery-rails'
 
 
 
