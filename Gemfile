@@ -67,6 +67,8 @@ end
 # jquery gem
 gem 'jquery-rails'
 
+#simple_form gem
+gem 'simple_form'
 
 
 

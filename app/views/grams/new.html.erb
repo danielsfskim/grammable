@@ -1,0 +1,6 @@
+<h1>New Gram</h1>
+
+<%= simple_form_for @gram do |f| %>
+  <%= f.input :message %>
+  <%= f.submit "Post!" %>
+<% end %>
