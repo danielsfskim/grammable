@@ -7,7 +7,21 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+  <body>
+    <% if current_user %>
+    You're singed in as <%= current_user.email %>
+    <%= link_to "Sign out", destory_user_session_path, method: :delete %>
+  <% else %>
+    <%= link_to "Sign In", new_user_session_path %>
+    <%= link_to "Sign Up", new_user_registration_path %>
+  <% end %>
+  <% if notice.present? %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
 
+  <% if alert.present? %>
+    <p class="alert"><%= alert %></p>
+  <% end %>
   <body>
     <%= yield %>
   </body>
