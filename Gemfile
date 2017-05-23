@@ -52,26 +52,26 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-# installing rspec 
+# installing rspec
 group :development, :test do
   gem 'rspec-rails', '~> 3.5'
+  gem "factory_girl_rails", "~> 4.0"
 end
 
 # bootstrap gem
 gem 'bootstrap', '~> 4.0.0.alpha6'
 
-source 'https://rails.assets.org' do
+source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'
 end
-
-# jquery gem
-gem 'jquery-rails'
 
 #simple_form gem
 gem 'simple_form'
 
 # devise gem
 gem 'devise'
+
+
 
 
 
