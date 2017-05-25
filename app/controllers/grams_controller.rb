@@ -7,7 +7,7 @@ class GramsController < ApplicationController
   def destroy
     @gram = Gram.find_by_id(params[:id])
     return render_not_found if @gram.blank?
-    return render_not_foound(:forbidden) if @gram_user != current_user
+    return render_not_found(:forbidden) if @gram.user != current_user
     @gram.destroy
     redirect_to root_path
   end
@@ -42,7 +42,7 @@ class GramsController < ApplicationController
 
   def create
     @gram = current_user.grams.create(gram_params)
-    
+
     if @gram.valid?
       redirect_to root_path
     else

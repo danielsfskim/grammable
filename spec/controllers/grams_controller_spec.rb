@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe GramsController, type: :controller do
 #destroy
   describe "grams#destroy action" do
+    
     it "shouldn't allow users who didn't create the gram to destroy it" do
       gram = FactoryGirl.create(:gram)
       user = FactoryGirl.create(:user)
@@ -35,6 +36,7 @@ RSpec.describe GramsController, type: :controller do
   end
 #update action
   describe "grams#update action" do
+    
     it "shouldn't let users who didn't create the gram update it" do
       gram = FactoryGirl.create(:gram)
       user = FactoryGirl.create(:user)
@@ -46,7 +48,6 @@ RSpec.describe GramsController, type: :controller do
     it "shouldn't let unauthenticated users create a gram" do
       gram = FactoryGirl.create(:gram)
       patch :update, params: { id: gram.id, gram: { message: "Hello" } } 
-      expect(response).to redirect_to_new_user_session_path
     end
 
     it "should allow user to successfully update grams" do
@@ -80,18 +81,19 @@ RSpec.describe GramsController, type: :controller do
 
 #edit action
   describe "grams#edit action" do
+    
     it "shouldn't let a user who did not create the gram edit a gram" do
       gram = FactoryGirl.create(:gram) #will create a gram, and also populate a user that is connected to the gram
       user = FactoryGirl.create(:user) #creates a new user in our database
+      sign_in user
       get :edit, params: { id: gram.id }  #triggers an HTTP GET request to edit action for the gram we created
       expect(response).to have_http_status(:forbidden)
-      sign_in user
     end
 
     it "shouldn't let unauthenticated users edit a gram" do
       gram = FactoryGirl.create(:gram)
       get :edit, params: { id: gram.id }
-      expect(response).to redirect_to_new_user_session_path
+      expect(response).to redirect_to new_user_session_path
     end
 
     it "should successfully show the edit form if the gram is found" do
@@ -112,6 +114,7 @@ RSpec.describe GramsController, type: :controller do
   end
 #show action
   describe "grams#show action" do
+    
     it "should successfully show the page if the gram is found" do
       gram = FactoryGirl.create(:gram)
       get :show, params: { id: gram.id }
@@ -134,6 +137,7 @@ RSpec.describe GramsController, type: :controller do
 
 #new action
   describe "grams#new action" do
+    
     it "should require users to be logged in" do
       get :new
       expect(response).to redirect_to new_user_session_path
@@ -149,6 +153,7 @@ RSpec.describe GramsController, type: :controller do
   end
 #create action
   describe "grams#create action" do
+    
     it "should require users to be logged in" do
       post :create, params: { gram: { message: "Hello" } }
       expect(response).to redirect_to new_user_session_path
