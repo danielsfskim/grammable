@@ -2,6 +2,21 @@ require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
 
+  describe "grams#destroy action" do
+    it "should allow a user to destroy grams" do
+      gram = FactoryGirl.create(:gram)
+      delete :destroy, params: { id: gram.id }
+      expect(response).to redirect_to root_path
+      gram = Gram.find_by_id(gram.id)
+      expect(gram).to eq nil
+    end
+
+    it "should return a 404 message if we cannot find a gram with the id that is specified" do
+      delete :destroy, params: { id: 'SPACEDUCK' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   describe "grams#update action" do
     it "should allow user to successfully update grams" do
       gram = FactoryGirl.create(:gram, message: "Initial Value")
@@ -61,53 +76,53 @@ RSpec.describe GramsController, type: :controller do
   end
 
 
-describe "grams#new action" do
-  it "should require users to be logged in" do
-    get :new
-    expect(response).to redirect_to new_user_session_path
-  end
+  describe "grams#new action" do
+    it "should require users to be logged in" do
+      get :new
+      expect(response).to redirect_to new_user_session_path
+    end
 
-  it "should successfully show the new form" do
-   user = FactoryGirl.create(:user)
-    sign_in user
-
-    get :new
-    expect(response).to have_http_status(:success)
-  end
-end
-
-describe "grams#create action" do
-
-  it "should require users to be logged in" do
-    post :create, params: { gram: { message: "Hello" } }
-    expect(response).to redirect_to new_user_session_path
-  end
-
-  it "should successfully create a new gram in our database" do
-    user = FactoryGirl.create(:user)
+    it "should successfully show the new form" do
+     user = FactoryGirl.create(:user)
       sign_in user
 
-    post :create, params: { gram: { message: 'Hello!' } }
-    expect(response).to redirect_to root_path
-
-    gram = Gram.last
-    expect(gram.message).to eq("Hello!")
-    expect(gram.user).to eq(user)
+      get :new
+      expect(response).to have_http_status(:success)
+    end
   end
 
-  it "should properly deal with validation errors" do
-    user = User.create(
-        email:                 'fakeuser@gmail.com',
-        password:              'secretPassword',
-        password_confirmation: 'secretPassword'
-      )
-      sign_in user
+  describe "grams#create action" do
 
-    gram_count = Gram.count
-    post :create, params: { gram: { message: '' } }
-    expect(response).to have_http_status(:unprocessable_entity)
-    expect(Gram.count).to eq 0
-  end
+    it "should require users to be logged in" do
+      post :create, params: { gram: { message: "Hello" } }
+      expect(response).to redirect_to new_user_session_path
+    end
 
- end
-end 
+    it "should successfully create a new gram in our database" do
+      user = FactoryGirl.create(:user)
+        sign_in user
+
+      post :create, params: { gram: { message: 'Hello!' } }
+      expect(response).to redirect_to root_path
+
+      gram = Gram.last
+      expect(gram.message).to eq("Hello!")
+      expect(gram.user).to eq(user)
+    end
+
+    it "should properly deal with validation errors" do
+      user = User.create(
+          email:                 'fakeuser@gmail.com',
+          password:              'secretPassword',
+          password_confirmation: 'secretPassword'
+        )
+        sign_in user
+
+      gram_count = Gram.count
+      post :create, params: { gram: { message: '' } }
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(Gram.count).to eq 0
+    end
+
+   end
+  end 
