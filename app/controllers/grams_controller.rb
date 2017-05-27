@@ -19,6 +19,7 @@ class GramsController < ApplicationController
     return render_not_found(:forbidden) if @gram.user != current_user
 
     @gram.update_attributes(gram_params)
+    
     if @gram.valid?
       return redirect_to root_path
     else
@@ -43,7 +44,6 @@ class GramsController < ApplicationController
 
   def create
     @gram = current_user.grams.create(gram_params)
-
     if @gram.valid?
       redirect_to root_path
     else
@@ -55,10 +55,6 @@ class GramsController < ApplicationController
 
   def gram_params
     params.require(:gram).permit(:message, :picture)
-  end
-
-  def render_not_found(status=:not_found)
-    render plain: "#{status.to_s.titleize} :(", status: status
   end
 
 end
