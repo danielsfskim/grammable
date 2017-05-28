@@ -16,14 +16,19 @@ ActiveRecord::Schema.define(version: 20170527183844) do
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
+    t.text     "message"
+    t.integer  "user_id"
+    t.integer  "gram_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["gram_id"], name: "index_comments_on_gram_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "grams", force: :cascade do |t|
+    t.text     "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text     "message"
     t.integer  "user_id"
     t.string   "picture"
     t.index ["user_id"], name: "index_grams_on_user_id", using: :btree
